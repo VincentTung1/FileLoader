@@ -62,7 +62,8 @@ public class X5FileLoaderActivity extends AppCompatActivity {
 
         mRoot = f(R.id.mRoot);
         mTopBar = f(R.id.mTopBar);
-        mTopBar.setFitsSystemWindows(false);
+
+        mTopBar.setFitsSystemWindows(false);  //取消沉浸式状态栏
 
         mReaderView = new TbsReaderView(this, new TbsReaderView.ReaderCallback() {
             @Override
@@ -83,7 +84,6 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         mName = intent.getStringExtra(FILE_NAME);
 
         initTopBar();
-
 
 
         boolean bool = mReaderView.preOpen(getFileType(mPath), false);

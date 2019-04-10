@@ -48,7 +48,7 @@ public class LoadFileManager {
         String suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
 
 
-        if (suffix.equals("pdf")){
+        if (suffix.equals(".pdf")){
             mPdfEngine.loadFile(file);
         }else{
             mX5Engine.loadFile(file);
@@ -71,7 +71,7 @@ public class LoadFileManager {
 
         String suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
 
-        if (suffix.equals("pdf")){
+        if (suffix.equals(".pdf")){
             mPdfEngine.isFileCanRead(f, callback);
         }else{
             mX5Engine.isFileCanRead(f, callback);

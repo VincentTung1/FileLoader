@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         }
         LoadFileManager.get().init(this);
 
-        String path  = Environment.getExternalStorageDirectory() + File.separator  + "美络移动适配平台.ppt";
+        String path  = Environment.getExternalStorageDirectory() + File.separator  + "test.pdf";
         final File f = new File(path);
         LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
             @Override

@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="dividingline_width">0.3dp</dimen>
+
+    <dimen name="navigationbar_height">40dp</dimen>
+    <item name="navigationbarbean_onlyimage_padding" format="float" type="string">8</item>
+    <item name="navigationbarbean_buttontext_textsize" format="float" type="string">17</item>
+    <item name="navigationbarbean_arrowtext_padding" format="float" type="string">8</item>
+    <item name="navigationbarbean_onlytext_padding" format="float" type="string">8</item>
+    <item name="navigationbarbean_titletext_textsize" format="float" type="string">18.5</item>
+</resources>

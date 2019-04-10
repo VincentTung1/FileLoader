@@ -16,7 +16,7 @@
         >
 
         <activity android:name=".engine.x5.activity.X5FileLoaderActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"/>
 
     </application>

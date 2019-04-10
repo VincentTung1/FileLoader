@@ -5,5 +5,8 @@
     android:id="@+id/mRoot">
 
 
-
+    <com.vincent.loadfilelibrary.topbar.NavigationBar
+        android:id="@+id/mTopBar"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/navigationbar_height" />
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.vincent.loadfilelibrary.engine.x5.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,14 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.tencent.smtt.sdk.TbsReaderView;
 import com.vincent.loadfilelibrary.R;
+import com.vincent.loadfilelibrary.topbar.NavigationBar;
+import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 
 import java.io.File;
 
@@ -38,6 +37,8 @@ public class X5FileLoaderActivity extends AppCompatActivity {
 
     TbsReaderView mReaderView;
 
+    NavigationBar mTopBar;
+
     /**文件路径*/
     private String mPath = "";
 
@@ -51,6 +52,7 @@ public class X5FileLoaderActivity extends AppCompatActivity {
 
         initViews();
         initData();
+        initListeners();
     }
 
 
@@ -59,6 +61,8 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_x_five_file_loader);
 
         mRoot = f(R.id.mRoot);
+        mTopBar = f(R.id.mTopBar);
+        mTopBar.setFitsSystemWindows(false);
 
         mReaderView = new TbsReaderView(this, new TbsReaderView.ReaderCallback() {
             @Override
@@ -67,8 +71,6 @@ public class X5FileLoaderActivity extends AppCompatActivity {
             }
         });
 
-        //注意：为了显示效果，需要添加到content 布局。如果不添加，显示页面会有偏移误差。
-//        ViewGroup viewGroup = findViewById(android.R.id.content);
         mReaderView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         mRoot.addView(mReaderView);
 
@@ -80,7 +82,7 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         mPath = intent.getStringExtra(FILE_PATH);
         mName = intent.getStringExtra(FILE_NAME);
 
-//        initTopBar();
+        initTopBar();
 
 
 
@@ -98,26 +100,22 @@ public class X5FileLoaderActivity extends AppCompatActivity {
 
     }
 
+    private void initListeners() {
+        mTopBar.setNavigationBarListener((view,location) -> {
+
+             switch (location){
+                 case LEFT_FIRST:
+                     finish();
+                     break;
+             }
+        });
+    }
+
     private void initTopBar() {
-        ActionBar bar = getActionBar();
-        // 返回箭头（默认不显示）
-        bar.setDisplayHomeAsUpEnabled(true);
-        // 显示标题
-        bar.setDisplayShowTitleEnabled(false);
-        //显示自定义视图
-        bar.setDisplayShowCustomEnabled(true);
-        TextView textView = new TextView(this);
-        textView.setText(mName);
-        textView.setTextSize(15);
-        textView.setTextColor(0xffffffff);
-        LinearLayout actionbarLayout = new LinearLayout(this);
-        bar.setCustomView(actionbarLayout,new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.WRAP_CONTENT));
-        ActionBar.LayoutParams mP = (ActionBar.LayoutParams) actionbarLayout
-                .getLayoutParams();
-        mP.gravity = mP.gravity & ~Gravity.HORIZONTAL_GRAVITY_MASK| Gravity.CENTER_HORIZONTAL;
-        actionbarLayout.addView(textView);
-        bar.setCustomView(actionbarLayout, mP);
+        TopBarBuilder.buildLeftArrowTextById(mTopBar,this,R.string.back);
+        mTopBar.setBackgroundColor(getResources().getColor(R.color.white));
+        mTopBar.setTextColorByLocation(NavigationBar.Location.LEFT_FIRST,getResources().getColor(android.R.color.black));
+        TopBarBuilder.buildCenterTextTitle(mTopBar,this,mName,getResources().getColor(android.R.color.black));
     }
 
     /***

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vincent.loadfilelibrary" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.vincent.loadfilelibrary">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,13 +14,15 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:screenOrientation="portrait"
         >
 
         <activity android:name=".engine.x5.activity.X5FileLoaderActivity"/>
 
         <activity android:name=".engine.pdf.PdfPreviewActivity"/>
+
+        <activity android:name=".engine.image.activity.ImageBrowserActivity"/>
     </application>
 
 

@@ -60,8 +60,8 @@ public class X5FileLoaderActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_x_five_file_loader);
 
-        mRoot = f(R.id.mRoot);
-        mTopBar = f(R.id.mTopBar);
+        mRoot = $(R.id.mRoot);
+        mTopBar = $(R.id.mTopBar);
 
         mTopBar.setFitsSystemWindows(false);  //取消沉浸式状态栏
 
@@ -159,7 +159,7 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private <T extends View> T f(int id){
+    private <T extends View> T $(int id){
         return (T)findViewById(id);
     }
 }

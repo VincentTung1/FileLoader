@@ -1,9 +1,11 @@
 package com.vincent.loadfilelibrary;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 
 import com.vincent.loadfilelibrary.engine.Engine;
-import com.vincent.loadfilelibrary.engine.PdfEngine;
+import com.vincent.loadfilelibrary.engine.image.ImageEngine;
+import com.vincent.loadfilelibrary.engine.pdf.PdfEngine;
 import com.vincent.loadfilelibrary.engine.x5.X5Engine;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
 
@@ -22,6 +24,8 @@ public class LoadFileManager {
 
     Engine mX5Engine;
 
+    Engine mImageEngine;
+
     public static LoadFileManager get(){
         return INSTANCE;
     }
@@ -30,6 +34,7 @@ public class LoadFileManager {
         mContext = context;
         mPdfEngine = new PdfEngine(mContext);
         mX5Engine = new X5Engine(mContext);
+        mImageEngine = new ImageEngine(mContext);
         return this;
     }
 
@@ -50,6 +55,8 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.loadFile(file);
+        }else if(isImageFile(file.getAbsolutePath())){
+            mImageEngine.loadFile(file);
         }else{
             mX5Engine.loadFile(file);
         }
@@ -73,10 +80,27 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.isFileCanRead(f, callback);
+        }else if(isImageFile(f.getAbsolutePath())){
+            mImageEngine.isFileCanRead(f, callback);
         }else{
             mX5Engine.isFileCanRead(f, callback);
         }
 
     }
 
+
+    /**
+     * 判断文件是否为图片文件
+     * @param filePath
+     * @return
+     */
+    private boolean isImageFile(String filePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        if (options.outWidth == -1) {
+            return false;
+        }
+        return true;
+    }
 }

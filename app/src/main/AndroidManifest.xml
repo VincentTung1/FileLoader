@@ -26,6 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <!--共享app文件数据的内容提供者-->
+        <provider
+            android:authorities="com.vincent.fileprovider"
+            android:name="com.vincent.loadfilelibrary.engine.x5.utils.VincentFileProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

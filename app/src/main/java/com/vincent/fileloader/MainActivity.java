@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         }
         LoadFileManager.get().init(this);
 
-        String path  = Environment.getExternalStorageDirectory() + File.separator  + "test.jpg";
+        String path  = Environment.getExternalStorageDirectory() + File.separator  + "test.docx";
         final File f = new File(path);
         LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
             @Override

@@ -60,6 +60,7 @@ public class ImageBrowserActivity extends AppCompatActivity {
 
         mTopBar.setFitsSystemWindows(false);  //取消沉浸式状态栏
         TopBarBuilder.buildLeftArrowTextById(mTopBar,this,R.string.back);
+        mTopBar.setVisibility(View.GONE);
     }
 
     private void initData() {

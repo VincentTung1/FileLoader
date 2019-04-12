@@ -7,6 +7,9 @@ import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
 
 import java.io.File;
 
+/**
+ *  Pdf文件打开引擎
+ */
 public class PdfEngine extends Engine {
 
 

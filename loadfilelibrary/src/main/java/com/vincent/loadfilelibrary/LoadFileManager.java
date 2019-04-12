@@ -8,6 +8,7 @@ import com.vincent.loadfilelibrary.engine.image.ImageEngine;
 import com.vincent.loadfilelibrary.engine.pdf.PdfEngine;
 import com.vincent.loadfilelibrary.engine.x5.X5Engine;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
+import com.vincent.loadfilelibrary.engine.zip.ZipEngine;
 
 import java.io.File;
 
@@ -26,6 +27,8 @@ public class LoadFileManager {
 
     Engine mImageEngine;
 
+    Engine mZipEngine;
+
     public static LoadFileManager get(){
         return INSTANCE;
     }
@@ -35,6 +38,7 @@ public class LoadFileManager {
         mPdfEngine = new PdfEngine(mContext);
         mX5Engine = new X5Engine(mContext);
         mImageEngine = new ImageEngine(mContext);
+        mZipEngine = new ZipEngine(mContext);
         return this;
     }
 
@@ -55,6 +59,8 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.loadFile(file);
+        }else if(suffix.equals(".zip") || suffix.equals(".rar")){
+            mZipEngine.loadFile(file);
         }else if(isImageFile(file.getAbsolutePath())){
             mImageEngine.loadFile(file);
         }else{
@@ -80,6 +86,8 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.isFileCanRead(f, callback);
+        }else if(suffix.equals(".zip") || suffix.equals(".rar")){
+            mZipEngine.isFileCanRead(f, callback);
         }else if(isImageFile(f.getAbsolutePath())){
             mImageEngine.isFileCanRead(f, callback);
         }else{

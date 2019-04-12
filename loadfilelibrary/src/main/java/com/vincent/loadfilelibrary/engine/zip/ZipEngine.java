@@ -1,28 +1,25 @@
-package com.vincent.loadfilelibrary.engine.image;
+package com.vincent.loadfilelibrary.engine.zip;
 
 import android.content.Context;
 
 import com.vincent.loadfilelibrary.engine.Engine;
-import com.vincent.loadfilelibrary.engine.image.activity.ImageBrowserActivity;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
+import com.vincent.loadfilelibrary.engine.zip.activity.ZipPreviewActivity;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
- *  图片文件打开引擎
+ *  Zip文件打开引擎
  */
-public class ImageEngine extends Engine {
+public class ZipEngine extends Engine {
 
-    public ImageEngine(Context context) {
+    public ZipEngine(Context context) {
         super(context);
     }
 
     @Override
     public void loadFile(File f) {
-        ArrayList<String> images = new ArrayList<>();
-        images.add(f.getAbsolutePath());
-        ImageBrowserActivity.start(mContext,images);
+        ZipPreviewActivity.start(mContext,f.getAbsolutePath());
     }
 
     @Override

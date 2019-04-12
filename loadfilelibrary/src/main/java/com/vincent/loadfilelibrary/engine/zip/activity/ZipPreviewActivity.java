@@ -76,6 +76,10 @@ public class ZipPreviewActivity extends AppCompatActivity {
         try {
 
             mTempFileDir = new File(mFilePath.substring(0,mFilePath.lastIndexOf(".")));
+            if (mTempFileDir.exists()){
+                FileUtils.deleteDirWihtFile(mTempFileDir);
+            }
+
             ZipUtils.UnZipFolder(mFilePath, mTempFileDir.getAbsolutePath());
 
             ArrayList<File> fs = new ArrayList<>();

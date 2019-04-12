@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.photoview.PhotoView;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class ImageBrowserAdapter extends PagerAdapter {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: ");
                 activity.finish();
+                activity.overridePendingTransition(0,R.anim.fade_scale_out);
             }
         });
         return photoView;

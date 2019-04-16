@@ -73,6 +73,7 @@ public class ImageBrowserActivity extends AppCompatActivity {
 
         mVp.setAdapter(new ImageBrowserAdapter(mImages,this));
 
+        photoViewDefaultY = getWindow().getDecorView().getY();
     }
 
     private void initListeners() {
@@ -90,6 +91,8 @@ public class ImageBrowserActivity extends AppCompatActivity {
 
 
     int lastY = 0 ;
+
+    float photoViewDefaultY = 0;
 
     /**
      *  下拉屏幕，销毁界面
@@ -117,12 +120,16 @@ public class ImageBrowserActivity extends AppCompatActivity {
                     View root  = getWindow().getDecorView();
                     root.setScaleX(lastY /ev.getRawY());
                     root.setScaleY(lastY / ev.getRawY());
+
+                    root.setY(ev.getRawY());
                 }
             case MotionEvent.ACTION_UP:
                 View root  = getWindow().getDecorView();
 
 
                 float scaleTimes = root.getScaleY();
+
+                int seconds  = 500;
 
                 if (scaleTimes < 0.6f){
                     finish();
@@ -131,16 +138,27 @@ public class ImageBrowserActivity extends AppCompatActivity {
 
                 if (scaleTimes == 1) break;
 
-                ValueAnimator anim = ValueAnimator.ofFloat(scaleTimes,1.0f);
-                anim.setDuration(500);
-                anim.addUpdateListener(animation -> {
+                ValueAnimator scaleAnim = ValueAnimator.ofFloat(scaleTimes,1.0f);
+                scaleAnim.setDuration(seconds);
+                scaleAnim.addUpdateListener(animation -> {
 
-                    float value = (float) anim.getAnimatedValue();
+                    float value = (float) scaleAnim.getAnimatedValue();
 
                     root.setScaleX(value);
                     root.setScaleY(value);
                 });
-                anim.start();
+                scaleAnim.start();
+
+                float transY = root.getY();
+
+                ValueAnimator transAnim = ValueAnimator.ofFloat(transY,photoViewDefaultY);
+                transAnim.setDuration(seconds);
+                transAnim.addUpdateListener(animation -> {
+
+                    float value = (float) animation.getAnimatedValue();
+                    root.setY(value);
+                });
+                transAnim.start();
 
                 break;
 

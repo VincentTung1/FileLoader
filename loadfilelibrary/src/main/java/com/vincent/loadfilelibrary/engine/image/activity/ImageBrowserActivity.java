@@ -1,16 +1,19 @@
 package com.vincent.loadfilelibrary.engine.image.activity;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.engine.image.adapter.ImageBrowserAdapter;
 import com.vincent.loadfilelibrary.engine.image.viewpager.PhotoViewPager;
+import com.vincent.loadfilelibrary.photoview.PhotoView;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 
@@ -69,6 +72,7 @@ public class ImageBrowserActivity extends AppCompatActivity {
         mImages = i.getStringArrayListExtra(IMAGES);
 
         mVp.setAdapter(new ImageBrowserAdapter(mImages,this));
+
     }
 
     private void initListeners() {
@@ -80,8 +84,71 @@ public class ImageBrowserActivity extends AppCompatActivity {
                    break;
            }
        });
+
     }
 
+
+
+    int lastY = 0 ;
+
+    /**
+     *  下拉屏幕，销毁界面
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        if(ev.getPointerCount() > 1) return super.dispatchTouchEvent(ev);
+
+        PhotoView view = (PhotoView) mVp.getChildAt(mVp.getCurrentItem());
+        if (view != null) {     // 假如当前缩放倍数不是默认缩放倍数，则不进行整体界面缩放进入关闭界面模式
+           if (view.getScale() != view.getMinimumScale()) return super.dispatchTouchEvent(ev);
+        }
+
+
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                lastY  = (int) ev.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (ev.getRawY() - lastY > 0){
+
+                    View root  = getWindow().getDecorView();
+                    root.setScaleX(lastY /ev.getRawY());
+                    root.setScaleY(lastY / ev.getRawY());
+                }
+            case MotionEvent.ACTION_UP:
+                View root  = getWindow().getDecorView();
+
+
+                float scaleTimes = root.getScaleY();
+
+                if (scaleTimes < 0.6f){
+                    finish();
+                   overridePendingTransition(0,R.anim.fade_scale_out);
+                }
+
+                if (scaleTimes == 1) break;
+
+                ValueAnimator anim = ValueAnimator.ofFloat(scaleTimes,1.0f);
+                anim.setDuration(500);
+                anim.addUpdateListener(animation -> {
+
+                    float value = (float) anim.getAnimatedValue();
+
+                    root.setScaleX(value);
+                    root.setScaleY(value);
+                });
+                anim.start();
+
+                break;
+
+
+        }
+
+        return super.dispatchTouchEvent(ev);
+    }
 
     public <T extends View> T $(@IdRes int id){
         return (T)findViewById(id);

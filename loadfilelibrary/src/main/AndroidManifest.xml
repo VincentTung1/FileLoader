@@ -22,7 +22,8 @@
 
         <activity android:name=".engine.pdf.PdfPreviewActivity"/>
 
-        <activity android:name=".engine.image.activity.ImageBrowserActivity"/>
+        <activity android:name=".engine.image.activity.ImageBrowserActivity"
+            android:theme="@style/TransparentBackground"/>
 
         <activity android:name=".engine.zip.activity.ZipPreviewActivity"
             android:launchMode="standard"/>

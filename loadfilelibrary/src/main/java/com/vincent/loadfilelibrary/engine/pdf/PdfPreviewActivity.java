@@ -1,10 +1,13 @@
 package com.vincent.loadfilelibrary.engine.pdf;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ViewGroup;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
@@ -12,10 +15,10 @@ import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.shockwave.pdfium.PdfDocument;
 import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
-import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
 import java.util.List;
@@ -41,6 +44,8 @@ public class PdfPreviewActivity extends Activity implements OnPageChangeListener
     String pdfFileName;
 
     Integer pageNumber = 0;
+
+    int mTopBarDefaultHeight = 0;
 
     public static void start(Context context, String filePath){
         Intent intent = new Intent(context,PdfPreviewActivity.class);
@@ -76,6 +81,9 @@ public class PdfPreviewActivity extends Activity implements OnPageChangeListener
        mTopBar.setFitsSystemWindows(false);   //取消沉浸式状态栏
 
        displayFromAsset(SAMPLE_FILE);
+
+        mTopBar.measure(0,0);
+        mTopBarDefaultHeight = mTopBar.getMeasuredHeight();
     }
 
     private void initListeners() {
@@ -103,6 +111,63 @@ public class PdfPreviewActivity extends Activity implements OnPageChangeListener
                 .onPageError(this)
                 .pageFitPolicy(FitPolicy.BOTH)
                 .load();
+
+    }
+
+
+    int lastY = 0 ;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+       switch (ev.getAction()){
+           case MotionEvent.ACTION_DOWN:
+               lastY = (int) ev.getRawY();
+               break;
+           case MotionEvent.ACTION_MOVE:
+
+               if (ev.getRawY() - lastY > 0){
+                   showTopBar();
+               }else {
+                   hideTopBar();
+               }
+
+               break;
+       }
+        return super.dispatchTouchEvent(ev);
+    }
+
+
+    /**
+     *  显示顶部栏
+     */
+    public void showTopBar(){
+
+        if (mTopBar.getHeight() == 0){
+            ValueAnimator anim = ValueAnimator.ofInt(0,mTopBarDefaultHeight);
+            updateTopBarLayout(anim);
+        }
+    }
+
+    /**
+     *  隐藏顶部栏
+     */
+    public void hideTopBar(){
+        if (mTopBar.getHeight() == mTopBarDefaultHeight){
+            ValueAnimator anim = ValueAnimator.ofInt(mTopBarDefaultHeight,0);
+            updateTopBarLayout(anim);
+        }
+    }
+
+    private void updateTopBarLayout(ValueAnimator anim) {
+        anim.setDuration(1000);
+        anim.addUpdateListener(animation -> {
+            int value = (int) anim.getAnimatedValue();
+            ViewGroup.LayoutParams params = mTopBar.getLayoutParams();
+            params.height = value;
+            mTopBar.setLayoutParams(params);
+        });
+        anim.start();
     }
 
     @Override

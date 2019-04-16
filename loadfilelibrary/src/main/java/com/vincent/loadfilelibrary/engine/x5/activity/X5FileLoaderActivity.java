@@ -1,5 +1,6 @@
 package com.vincent.loadfilelibrary.engine.x5.activity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -7,9 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 import com.tencent.smtt.sdk.TbsReaderView;
 import com.vincent.loadfilelibrary.R;
@@ -33,7 +35,7 @@ public class X5FileLoaderActivity extends AppCompatActivity {
     private String TEMP_DIR = Environment.getExternalStorageDirectory() + File.separator +"TbsReaderTemp";
 
 
-    LinearLayout mRoot;
+    FrameLayout mRoot;
 
     TbsReaderView mReaderView;
 
@@ -45,6 +47,8 @@ public class X5FileLoaderActivity extends AppCompatActivity {
     /**文件名*/
     private String mName = "";
 
+
+    int mTopBarDefaultHeight = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +102,9 @@ public class X5FileLoaderActivity extends AppCompatActivity {
             mReaderView.openFile(bundle);
         }
 
+
+        mTopBar.measure(0,0);
+        mTopBarDefaultHeight = mTopBar.getMeasuredHeight();
     }
 
     private void initListeners() {
@@ -116,6 +123,62 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         mTopBar.setBackgroundColor(getResources().getColor(R.color.white));
         mTopBar.setTextColorByLocation(NavigationBar.Location.LEFT_FIRST,getResources().getColor(android.R.color.black));
         TopBarBuilder.buildCenterTextTitle(mTopBar,this,mName,getResources().getColor(android.R.color.black));
+    }
+
+
+
+    int lastY = 0 ;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                lastY = (int) ev.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                if (ev.getRawY() - lastY > 0){
+                    showTopBar();
+                }else {
+                    hideTopBar();
+                }
+
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     *  显示顶部栏
+     */
+    public void showTopBar(){
+
+        if (mTopBar.getHeight() == 0){
+            ValueAnimator anim = ValueAnimator.ofInt(0,mTopBarDefaultHeight);
+            updateTopBarLayout(anim);
+        }
+    }
+
+    /**
+     *  隐藏顶部栏
+     */
+    public void hideTopBar(){
+        if (mTopBar.getHeight() == mTopBarDefaultHeight){
+            ValueAnimator anim = ValueAnimator.ofInt(mTopBarDefaultHeight,0);
+            updateTopBarLayout(anim);
+        }
+    }
+
+    private void updateTopBarLayout(ValueAnimator anim) {
+        anim.setDuration(1000);
+        anim.addUpdateListener(animation -> {
+            int value = (int) anim.getAnimatedValue();
+            ViewGroup.LayoutParams params = mTopBar.getLayoutParams();
+            params.height = value;
+            mTopBar.setLayoutParams(params);
+        });
+        anim.start();
     }
 
     /***

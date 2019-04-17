@@ -1,8 +1,10 @@
 package com.vincent.fileloader;
 
+import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,44 +29,61 @@ public class MainActivity extends AppCompatActivity {
 
         mLv = findViewById(R.id.mLv);
 
-        String[] list = new String[1];
-        list[0]="android.permission.WRITE_EXTERNAL_STORAGE";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            MainActivity.this.requestPermissions(list, 105);
-        }
+
         LoadFileManager.get().init(this);
 
+        askForPermission();
 
-
-        String rootPath  = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File dir = new File(rootPath);
-        File[] files = dir.listFiles();
-        ArrayList<String> fs =new ArrayList<>();
-        for (File file : files) {
-            if (file.isFile()) fs.add(file.getAbsolutePath());
-        }
-
-        mLv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, (String[])fs.toArray(new String[fs.size()])));
-        mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String path = fs.get(position);
-                File f = new File(path);
-                LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
-                    @Override
-                    public void onSuccess(boolean isOK) {
-
-                        if (isOK) LoadFileManager.get().loadFile(f);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
-            }
-        });
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 105){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    askForPermission();
+                }else {
+                    String rootPath  = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    File dir = new File(rootPath);
+                    File[] files = dir.listFiles();
+                    ArrayList<String> fs =new ArrayList<>();
+                    for (File file : files) {
+                        if (file.isFile()) fs.add(file.getAbsolutePath());
+                    }
+
+                    mLv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, (String[])fs.toArray(new String[fs.size()])));
+                    mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String path = fs.get(position);
+                            File f = new File(path);
+                            LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
+                                @Override
+                                public void onSuccess(boolean isOK) {
+
+                                    if (isOK) LoadFileManager.get().loadFile(f);
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void askForPermission() {
+        String[] list = new String[1];
+        list[0]= Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            MainActivity.this.requestPermissions(list, 105);
+        }
+    }
 }

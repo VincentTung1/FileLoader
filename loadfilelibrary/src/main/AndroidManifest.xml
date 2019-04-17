@@ -14,18 +14,22 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:screenOrientation="portrait"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         >
 
-        <activity android:name=".engine.x5.activity.X5FileLoaderActivity"/>
-
-        <activity android:name=".engine.pdf.PdfPreviewActivity"/>
-
-        <activity android:name=".engine.image.activity.ImageBrowserActivity"
+        <activity android:name=".engine.x5.activity.X5FileLoaderActivity"
             android:theme="@style/TransparentBackground"/>
 
+        <activity android:name=".engine.pdf.PdfPreviewActivity"
+            android:theme="@style/TransparentBackground"/>
+
+        <activity android:name=".engine.image.activity.ImageBrowserActivity"
+            android:theme="@style/TransparentBackground"
+            />
+
         <activity android:name=".engine.zip.activity.ZipPreviewActivity"
+            android:theme="@style/TransparentBackground"
             android:launchMode="standard"/>
     </application>
 

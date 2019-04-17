@@ -1,7 +1,6 @@
 package com.vincent.loadfilelibrary.engine.pdf;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.shockwave.pdfium.PdfDocument;
+import com.vincent.loadfilelibrary.BaseActivity;
 import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
@@ -23,7 +23,7 @@ import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 import java.io.File;
 import java.util.List;
 
-public class PdfPreviewActivity extends Activity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
+public class PdfPreviewActivity extends BaseActivity implements OnPageChangeListener, OnLoadCompleteListener, OnPageErrorListener {
 
     public static final String SAMPLE_FILE = "sample.pdf";
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.tencent.smtt.sdk.TbsReaderView;
+import com.vincent.loadfilelibrary.BaseActivity;
 import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
@@ -23,7 +23,7 @@ import java.io.File;
 /**
  *  腾讯x5内核文件加载器展示页
  */
-public class X5FileLoaderActivity extends AppCompatActivity {
+public class X5FileLoaderActivity extends BaseActivity {
 
     /* Activity标记 */
     protected final String TAG = this.getClass().getSimpleName();
@@ -148,6 +148,11 @@ public class X5FileLoaderActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
+
+
+
+
+
 
     /**
      *  显示顶部栏

@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import com.vincent.loadfilelibrary.BaseActivity;
 import com.vincent.loadfilelibrary.LoadFileManager;
 import com.vincent.loadfilelibrary.R;
 import com.vincent.loadfilelibrary.engine.x5.utils.FileUtils;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  *  压缩包文件浏览器
  */
-public class ZipPreviewActivity extends AppCompatActivity {
+public class ZipPreviewActivity extends BaseActivity {
 
     private static final String FILE_PATH = "filepath" ;
 

@@ -121,7 +121,7 @@ public class ImageBrowserActivity extends AppCompatActivity {
                     root.setScaleX(lastY /ev.getRawY());
                     root.setScaleY(lastY / ev.getRawY());
 
-                    root.setY(ev.getRawY());
+                    root.setY(ev.getRawY() / 2);
                 }
             case MotionEvent.ACTION_UP:
                 View root  = getWindow().getDecorView();

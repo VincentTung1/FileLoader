@@ -19,6 +19,8 @@ import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 
 import java.util.ArrayList;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 
 /**
  *  图片浏览器
@@ -42,6 +44,7 @@ public class ImageBrowserActivity extends AppCompatActivity {
      */
     public static void start(Context c,ArrayList<String> images){
         Intent i = new Intent(c,ImageBrowserActivity.class);
+        i.addFlags(FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(IMAGES,images);
         c.startActivity(i);
     }

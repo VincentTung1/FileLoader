@@ -2,10 +2,12 @@ package com.vincent.loadfilelibrary;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import com.vincent.loadfilelibrary.engine.Engine;
 import com.vincent.loadfilelibrary.engine.image.ImageEngine;
 import com.vincent.loadfilelibrary.engine.pdf.PdfEngine;
+import com.vincent.loadfilelibrary.engine.poi.PoiEngine;
 import com.vincent.loadfilelibrary.engine.x5.X5Engine;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
 import com.vincent.loadfilelibrary.engine.zip.ZipEngine;
@@ -29,6 +31,8 @@ public class LoadFileManager {
 
     Engine mZipEngine;
 
+    Engine mPoiEngine;
+
     public static LoadFileManager get(){
         return INSTANCE;
     }
@@ -37,6 +41,7 @@ public class LoadFileManager {
         mContext = context;
         mPdfEngine = new PdfEngine(mContext);
         mX5Engine = new X5Engine(mContext);
+        mPoiEngine = new PoiEngine(mContext);
         mImageEngine = new ImageEngine(mContext);
         mZipEngine = new ZipEngine(mContext);
         return this;
@@ -59,6 +64,10 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.loadFile(file);
+        }else if(suffix. endsWith( ".doc") || suffix. endsWith(".docx") ||
+                suffix.endsWith(".xls") || suffix.endsWith(".xlsx") ||
+                suffix.endsWith(".ppt") || suffix.endsWith(".pptx")){
+            mPoiEngine.loadFile(file);
         }else if(suffix.equals(".zip") || suffix.equals(".rar")){
             mZipEngine.loadFile(file);
         }else if(isImageFile(file.getAbsolutePath())){
@@ -66,6 +75,8 @@ public class LoadFileManager {
         }else{
             mX5Engine.loadFile(file);
         }
+        
+        
     }
 
 
@@ -86,6 +97,10 @@ public class LoadFileManager {
 
         if (suffix.equals(".pdf")){
             mPdfEngine.isFileCanRead(f, callback);
+        }else if(suffix. endsWith( ".doc") || suffix. endsWith(".docx") ||
+                suffix.endsWith(".xls") || suffix.endsWith(".xlsx") ||
+                suffix.endsWith(".ppt") || suffix.endsWith(".pptx")){
+            mPoiEngine.isFileCanRead(f,callback);
         }else if(suffix.equals(".zip") || suffix.equals(".rar")){
             mZipEngine.isFileCanRead(f, callback);
         }else if(isImageFile(f.getAbsolutePath())){

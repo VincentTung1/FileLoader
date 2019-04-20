@@ -32,7 +32,38 @@ public class MainActivity extends AppCompatActivity {
 
         LoadFileManager.get().init(this);
 
-        askForPermission();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            askForPermission();
+        }else {
+                String rootPath  = Environment.getExternalStorageDirectory().getAbsolutePath();
+                File dir = new File(rootPath);
+                File[] files = dir.listFiles();
+                ArrayList<String> fs =new ArrayList<>();
+                for (File file : files) {
+                    if (file.isFile()) fs.add(file.getAbsolutePath());
+                }
+
+                mLv.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, (String[])fs.toArray(new String[fs.size()])));
+                mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String path = fs.get(position);
+                        File f = new File(path);
+                        LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
+                            @Override
+                            public void onSuccess(boolean isOK) {
+
+                                if (isOK) LoadFileManager.get().loadFile(f);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+                        });
+                    }
+                });
+        }
 
     }
 

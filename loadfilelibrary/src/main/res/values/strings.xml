@@ -4,4 +4,8 @@
     <!--NavigationBar-->
     <string name="back">返回</string>
     <string name="save">保存</string>
+
+    <string name="preview_from_other_app">第三方应用打开</string>
+    <string name="not_supported_file_in_builtin_app">应用内部不支持打开该文件，请用第三方应用打开</string>
+    <string name="preview_error">预览出现错误!</string>
 </resources>

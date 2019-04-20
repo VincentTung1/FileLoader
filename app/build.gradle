@@ -9,6 +9,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
 
         ndk{abiFilters "armeabi"}   //必须加上此配置，否则会造成x5内核初始化失败
     }
@@ -33,4 +34,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':loadfilelibrary')
+
+    implementation 'com.android.support:multidex:1.0.3'
 }

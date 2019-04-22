@@ -47,7 +47,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // POI库
-    implementation 'com.github.lauhwong:document-viewer-base:0.12-SNAPSHOT'
-    implementation 'com.github.lauhwong:microsoft-document-viewer:0.12-SNAPSHOT'
+    implementation 'com.github.lauhwong:document-viewer-base:0.13-SNAPSHOT'
+    implementation 'com.github.lauhwong:microsoft-document-viewer:0.13-SNAPSHOT'
     implementation 'com.ldoublem.loadingview:loadingviewlib:1.0'
 }

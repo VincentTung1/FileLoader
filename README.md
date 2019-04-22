@@ -4,3 +4,16 @@
 特性:
 1.自定义文件浏览器支持侧滑关闭界面！
 2.图片浏览器支持下拉关闭界面！
+
+
+gradle使用方法:
+
+android {
+     defaultConfig {
+       ndk{abiFilters "armeabi"}   //必须加上此配置，否则会造成x5内核初始化失败
+     }
+}
+
+dependencies {
+  implementation 'com.github.VincentTung1:FileLoader:-SNAPSHOT'
+}

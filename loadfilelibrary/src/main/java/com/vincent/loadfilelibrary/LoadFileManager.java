@@ -2,7 +2,6 @@ package com.vincent.loadfilelibrary;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 
 import com.vincent.loadfilelibrary.engine.Engine;
 import com.vincent.loadfilelibrary.engine.image.ImageEngine;
@@ -11,8 +10,10 @@ import com.vincent.loadfilelibrary.engine.poi.PoiEngine;
 import com.vincent.loadfilelibrary.engine.x5.X5Engine;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
 import com.vincent.loadfilelibrary.engine.zip.ZipEngine;
+import com.vincent.loadfilelibrary.popwindow.listview.ListViewPopup;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  *  文件加载管理类
@@ -32,6 +33,10 @@ public class LoadFileManager {
     Engine mZipEngine;
 
     Engine mPoiEngine;
+
+
+    private ArrayList<String> mOptions;
+    private ListViewPopup.OnItemOnClickListener mTopBarItemClickListener;
 
     public static LoadFileManager get(){
         return INSTANCE;
@@ -125,5 +130,34 @@ public class LoadFileManager {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     *  设置文件浏览器顶部栏右上角菜单项
+     * @param options
+     * @param listener
+     */
+    public LoadFileManager setTopBarOptions(ArrayList<String> options, ListViewPopup.OnItemOnClickListener listener){
+        mOptions = options;
+        mTopBarItemClickListener = listener;
+        return this;
+    }
+
+
+    /**
+     *  获取顶部栏右上角所有菜单项
+     * @return
+     */
+    public ArrayList<String> getOptions() {
+        return mOptions;
+    }
+
+    /**
+     *  获取顶部栏右上角所有菜单项监听事件
+     * @return
+     */
+    public ListViewPopup.OnItemOnClickListener getTopBarItemClickListener() {
+        return mTopBarItemClickListener;
     }
 }

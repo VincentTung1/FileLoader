@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.vincent.loadfilelibrary.LoadFileManager;
 import com.vincent.loadfilelibrary.engine.x5.callback.BooleanCallback;
+import com.vincent.loadfilelibrary.engine.x5.utils.FileUIUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,7 +54,18 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(boolean isOK) {
 
-                                if (isOK) LoadFileManager.get().loadFile(f);
+                                ArrayList<String> opts = new ArrayList();
+                                opts.add("用其他应用打开");
+
+                                if (isOK) LoadFileManager.get().setTopBarOptions(opts, (item, index) -> {
+
+                                    switch (index){
+                                        case 0:
+                                            FileUIUtil.openFile(MainActivity.this,f);
+                                            break;
+                                    }
+
+                                }).loadFile(f);
                             }
 
                             @Override

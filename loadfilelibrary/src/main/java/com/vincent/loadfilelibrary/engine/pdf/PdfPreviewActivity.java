@@ -16,7 +16,10 @@ import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.shockwave.pdfium.PdfDocument;
 import com.vincent.loadfilelibrary.BaseActivity;
+import com.vincent.loadfilelibrary.LoadFileManager;
 import com.vincent.loadfilelibrary.R;
+import com.vincent.loadfilelibrary.popwindow.listview.ActionItem;
+import com.vincent.loadfilelibrary.popwindow.listview.ListViewPopup;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 
@@ -35,6 +38,8 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
     private PDFView pdfView;
 
     private NavigationBar mTopBar;
+
+    private ListViewPopup titlePopup;
 
     /**文件路径*/
     String mFilePath = "";
@@ -93,8 +98,27 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
                 case LEFT_FIRST:
                     finish();
                     break;
+
+                case RIGHT_FIRST:
+                    showOptionsMenu(v);
+                    break;
             }
         });
+
+        if (LoadFileManager.get().getOptions() != null && LoadFileManager.get().getOptions().size ()> 0){
+            TopBarBuilder.buildOnlyImageByDrawable(
+                    mTopBar,this,NavigationBar.Location.RIGHT_FIRST,
+                    getResources().getDrawable(R.drawable.ic_more));
+
+            titlePopup =new ListViewPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            for (String opt : LoadFileManager.get().getOptions()) {
+                titlePopup.addAction(new ActionItem(null, opt));
+
+            }
+
+            titlePopup.setItemOnClickListener(LoadFileManager.get().getTopBarItemClickListener());
+        }
     }
 
 
@@ -169,6 +193,15 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
         });
         anim.start();
     }
+
+    /**
+     *  显示右上角菜单弹窗
+     * @param containView
+     */
+    private void showOptionsMenu(ViewGroup containView) {
+        titlePopup.show(containView);
+    }
+
 
     @Override
     public void onPageChanged(int page, int pageCount) {

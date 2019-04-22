@@ -14,7 +14,10 @@ import android.widget.FrameLayout;
 
 import com.tencent.smtt.sdk.TbsReaderView;
 import com.vincent.loadfilelibrary.BaseActivity;
+import com.vincent.loadfilelibrary.LoadFileManager;
 import com.vincent.loadfilelibrary.R;
+import com.vincent.loadfilelibrary.popwindow.listview.ActionItem;
+import com.vincent.loadfilelibrary.popwindow.listview.ListViewPopup;
 import com.vincent.loadfilelibrary.topbar.NavigationBar;
 import com.vincent.loadfilelibrary.topbar.TopBarBuilder;
 
@@ -49,6 +52,9 @@ public class X5FileLoaderActivity extends BaseActivity {
 
 
     int mTopBarDefaultHeight = 0;
+
+
+    private ListViewPopup titlePopup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,8 +120,27 @@ public class X5FileLoaderActivity extends BaseActivity {
                  case LEFT_FIRST:
                      finish();
                      break;
+
+                 case RIGHT_FIRST:
+                     showOptionsMenu(view);
+                     break;
              }
         });
+
+        if (LoadFileManager.get().getOptions() != null && LoadFileManager.get().getOptions().size ()> 0){
+            TopBarBuilder.buildOnlyImageByDrawable(
+                    mTopBar,this,NavigationBar.Location.RIGHT_FIRST,
+                    getResources().getDrawable(R.drawable.ic_more));
+
+            titlePopup =new ListViewPopup(this, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            for (String opt : LoadFileManager.get().getOptions()) {
+                titlePopup.addAction(new ActionItem(null, opt));
+
+            }
+
+            titlePopup.setItemOnClickListener(LoadFileManager.get().getTopBarItemClickListener());
+        }
     }
 
     private void initTopBar() {
@@ -125,6 +150,14 @@ public class X5FileLoaderActivity extends BaseActivity {
         TopBarBuilder.buildCenterTextTitle(mTopBar,this,mName,getResources().getColor(android.R.color.black));
     }
 
+
+    /**
+     *  显示右上角菜单弹窗
+     * @param containView
+     */
+    private void showOptionsMenu(ViewGroup containView) {
+        titlePopup.show(containView);
+    }
 
 
     int lastY = 0 ;
@@ -148,9 +181,6 @@ public class X5FileLoaderActivity extends BaseActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
-
-
-
 
 
 

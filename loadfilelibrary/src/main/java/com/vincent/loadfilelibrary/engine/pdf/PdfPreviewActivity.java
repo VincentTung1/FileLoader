@@ -52,6 +52,9 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
 
     int mTopBarDefaultHeight = 0;
 
+    /**是否设置顶部栏隐藏*/
+    boolean isEnableTopBarHide = false;
+
     public static void start(Context context, String filePath){
         Intent intent = new Intent(context,PdfPreviewActivity.class);
         intent.putExtra(FILE_PATH,filePath);
@@ -143,6 +146,8 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        if (!isEnableTopBarHide) return super.dispatchTouchEvent(ev);
 
        switch (ev.getAction()){
            case MotionEvent.ACTION_DOWN:

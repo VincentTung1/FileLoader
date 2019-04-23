@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/preview_container"/>
-    <com.ldoublem.loadingviewlib.view.LVEatBeans
-            android:id="@+id/view_loading"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
 
     <com.vincent.loadfilelibrary.topbar.NavigationBar
         android:id="@+id/mTopBar"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/navigationbar_height" />
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/preview_container"/>
+
+        <LinearLayout
+            android:id="@+id/view_loading"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"
+                android:text="@string/is_loading_please_wait"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>>
+
+
+
+</LinearLayout>

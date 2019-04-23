@@ -4,14 +4,13 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.ldoublem.loadingviewlib.view.LVEatBeans
+import android.widget.LinearLayout
 import com.miracle.documentviewer.*
 import com.vincent.loadfilelibrary.BaseActivity
 import com.vincent.loadfilelibrary.LoadFileManager
@@ -40,7 +39,7 @@ class PoiDocumentPreviewActivity : BaseActivity() {
         }
     }
 
-    private lateinit var mLoadingView: LVEatBeans
+    private lateinit var mLoadingView: LinearLayout
 
     private lateinit var mTopBar: NavigationBar
 
@@ -52,6 +51,9 @@ class PoiDocumentPreviewActivity : BaseActivity() {
 
     internal var mTopBarDefaultHeight = 0
 
+    /**是否设置顶部栏隐藏 */
+    internal var isEnableTopBarHide = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_viewer)
@@ -59,10 +61,7 @@ class PoiDocumentPreviewActivity : BaseActivity() {
         mTopBar = findViewById(R.id.mTopBar)
         mTopBar.fitsSystemWindows = false  //取消沉浸式状态栏
 
-        mLoadingView = findViewById<LVEatBeans>(R.id.view_loading).apply {
-            setViewColor(Color.BLACK)
-            setEyeColor(Color.WHITE)
-        }
+        mLoadingView = findViewById<LinearLayout>(R.id.view_loading)
         startLoading()
         val previewUri = intent.getParcelableExtra<Uri>(PREVIEW_URI) ?: kotlin.run {
             finish()
@@ -144,11 +143,11 @@ class PoiDocumentPreviewActivity : BaseActivity() {
         if (mLoadingView.visibility != View.VISIBLE) {
             mLoadingView.visibility = View.VISIBLE
         }
-        mLoadingView.startAnim(3000)
+//        mLoadingView.startAnim(3000)
     }
 
     private fun stopLoading() {
-        mLoadingView.stopAnim()
+//        mLoadingView.stopAnim()
         if (mLoadingView.visibility != View.GONE) {
             mLoadingView.visibility = View.GONE
         }
@@ -158,6 +157,8 @@ class PoiDocumentPreviewActivity : BaseActivity() {
     internal var lastY = 0
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+
+        if (!isEnableTopBarHide) return super.dispatchTouchEvent(ev)
 
         when (ev.action) {
             MotionEvent.ACTION_DOWN -> lastY = ev.rawY.toInt()

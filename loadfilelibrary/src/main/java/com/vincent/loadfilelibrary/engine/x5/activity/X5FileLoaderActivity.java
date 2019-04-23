@@ -56,6 +56,9 @@ public class X5FileLoaderActivity extends BaseActivity {
 
     private ListViewPopup titlePopup;
 
+    /**是否设置顶部栏隐藏*/
+    boolean isEnableTopBarHide = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +167,8 @@ public class X5FileLoaderActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        if (!isEnableTopBarHide) return super.dispatchTouchEvent(ev);
 
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:

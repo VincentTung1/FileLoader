@@ -64,7 +64,13 @@ public class LoadFileManager {
 
         String name = file.getName();
 
-        String suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
+        String suffix = "";
+
+        try {
+            suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         if (suffix.equals(".pdf")){
@@ -98,7 +104,13 @@ public class LoadFileManager {
 
         String name = f.getName();
 
-        String suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
+        String suffix = "";
+
+        try {
+            suffix = name.substring(name.lastIndexOf(".")).toLowerCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (suffix.equals(".pdf")){
             mPdfEngine.isFileCanRead(f, callback);

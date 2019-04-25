@@ -1,5 +1,7 @@
 package com.vincent.loadfilelibrary.engine.pdf;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -92,6 +94,10 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
 
         mTopBar.measure(0,0);
         mTopBarDefaultHeight = mTopBar.getMeasuredHeight();
+
+        pdfView.setPadding(0,mTopBarDefaultHeight,0,0);
+
+        isEnableTopBarHide = LoadFileManager.get().enableScrollHideTopbar();
     }
 
     private void initListeners() {
@@ -172,8 +178,14 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
      */
     public void showTopBar(){
 
-        if (mTopBar.getHeight() == 0){
-            ValueAnimator anim = ValueAnimator.ofInt(0,mTopBarDefaultHeight);
+        if (mTopBar.getY() == -mTopBarDefaultHeight){
+            ValueAnimator anim = ValueAnimator.ofInt(-mTopBarDefaultHeight,0);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    pdfView.setPadding(0,mTopBarDefaultHeight,0,0);
+                }
+            });
             updateTopBarLayout(anim);
         }
     }
@@ -182,19 +194,24 @@ public class PdfPreviewActivity extends BaseActivity implements OnPageChangeList
      *  隐藏顶部栏
      */
     public void hideTopBar(){
-        if (mTopBar.getHeight() == mTopBarDefaultHeight){
-            ValueAnimator anim = ValueAnimator.ofInt(mTopBarDefaultHeight,0);
+
+        if (mTopBar.getY() == 0){
+            ValueAnimator anim = ValueAnimator.ofInt(0,-mTopBarDefaultHeight);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    pdfView.setPadding(0,0,0,0);
+                }
+            });
             updateTopBarLayout(anim);
         }
     }
 
     private void updateTopBarLayout(ValueAnimator anim) {
-        anim.setDuration(1000);
+        anim.setDuration(200);
         anim.addUpdateListener(animation -> {
             int value = (int) anim.getAnimatedValue();
-            ViewGroup.LayoutParams params = mTopBar.getLayoutParams();
-            params.height = value;
-            mTopBar.setLayoutParams(params);
+            mTopBar.setY(value);
         });
         anim.start();
     }

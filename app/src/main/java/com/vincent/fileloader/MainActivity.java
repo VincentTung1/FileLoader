@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                                 ArrayList<String> opts = new ArrayList();
                                 opts.add("用其他应用打开");
 
-                                if (isOK) LoadFileManager.get().setTopBarOptions(opts, (item, index) -> {
+                                if (isOK) LoadFileManager.get().setScrollHideTopbar(true).setTopBarOptions(opts, (item, index) -> {
 
                                     switch (index){
                                         case 0:
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             String path = fs.get(position);
                             File f = new File(path);
-                            LoadFileManager.get().isFileCanRead(f, new BooleanCallback() {
+                            LoadFileManager.get().setScrollHideTopbar(true).isFileCanRead(f, new BooleanCallback() {
                                 @Override
                                 public void onSuccess(boolean isOK) {
 

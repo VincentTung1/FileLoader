@@ -1,5 +1,7 @@
 package com.vincent.loadfilelibrary.engine.poi.activity
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
@@ -54,6 +56,8 @@ class PoiDocumentPreviewActivity : BaseActivity() {
     /**是否设置顶部栏隐藏 */
     internal var isEnableTopBarHide = false
 
+    private var container: FrameLayout? =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_document_viewer)
@@ -67,14 +71,14 @@ class PoiDocumentPreviewActivity : BaseActivity() {
             finish()
             return
         }
-        val container = findViewById<FrameLayout>(R.id.preview_container)
+        container = findViewById<FrameLayout>(R.id.preview_container)
         val viewer = DocumentViewerRepo.getViewerByUri(this, previewUri) ?: kotlin.run {
             toast(this, R.string.not_supported_file_in_builtin_app)
             finish()
             return
         }
         try {
-            viewer.getParser().parse(previewUri).render(container, object : DocumentCallback<DVResult> {
+            viewer.getParser().parse(previewUri).render(container!!, object : DocumentCallback<DVResult> {
                 override fun onResult(result: DVResult) {
                     super.onResult(result)
                     println("render success with uri:$previewUri")
@@ -137,6 +141,12 @@ class PoiDocumentPreviewActivity : BaseActivity() {
 
         mTopBar.measure(0, 0)
         mTopBarDefaultHeight = mTopBar.measuredHeight
+
+
+        container!!.setPadding(0, mTopBarDefaultHeight, 0, 0)
+
+
+        isEnableTopBarHide = LoadFileManager.get().enableScrollHideTopbar()
     }
 
     private fun startLoading() {
@@ -178,8 +188,13 @@ class PoiDocumentPreviewActivity : BaseActivity() {
      */
     fun showTopBar() {
 
-        if (mTopBar.height == 0) {
-            val anim = ValueAnimator.ofInt(0, mTopBarDefaultHeight)
+        if (mTopBar.y == (-mTopBarDefaultHeight).toFloat()) {
+            val anim = ValueAnimator.ofInt(-mTopBarDefaultHeight, 0)
+            anim.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    container!!.setPadding(0, mTopBarDefaultHeight, 0, 0)
+                }
+            })
             updateTopBarLayout(anim)
         }
     }
@@ -188,19 +203,22 @@ class PoiDocumentPreviewActivity : BaseActivity() {
      * 隐藏顶部栏
      */
     fun hideTopBar() {
-        if (mTopBar.height == mTopBarDefaultHeight) {
-            val anim = ValueAnimator.ofInt(mTopBarDefaultHeight, 0)
+        if (mTopBar.y == 0f) {
+            val anim = ValueAnimator.ofInt(0, -mTopBarDefaultHeight)
+            anim.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    container!!.setPadding(0, 0, 0, 0)
+                }
+            })
             updateTopBarLayout(anim)
         }
     }
 
     private fun updateTopBarLayout(anim: ValueAnimator) {
-        anim.duration = 1000
+        anim.duration = 200
         anim.addUpdateListener { animation ->
             val value = anim.animatedValue as Int
-            val params = mTopBar.layoutParams
-            params.height = value
-            mTopBar.layoutParams = params
+            mTopBar.y = value.toFloat()
         }
         anim.start()
     }

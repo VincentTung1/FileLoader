@@ -38,6 +38,9 @@ public class LoadFileManager {
     private ArrayList<String> mOptions;
     private ListViewPopup.OnItemOnClickListener mTopBarItemClickListener;
 
+    /**是否启动滑动页面时隐藏顶部栏*/
+    private boolean mEnableScrollHideTopbar;
+
     public static LoadFileManager get(){
         return INSTANCE;
     }
@@ -171,5 +174,23 @@ public class LoadFileManager {
      */
     public ListViewPopup.OnItemOnClickListener getTopBarItemClickListener() {
         return mTopBarItemClickListener;
+    }
+
+
+    /**
+     *  设置是否启动滑动页面时隐藏顶部栏
+     * @param enable
+     */
+    public LoadFileManager setScrollHideTopbar(boolean enable){
+        mEnableScrollHideTopbar = enable;
+        return this;
+    }
+
+    /**
+     *  获取是否启动滑动页面时隐藏顶部栏
+     * @return
+     */
+    public boolean enableScrollHideTopbar(){
+        return mEnableScrollHideTopbar;
     }
 }
